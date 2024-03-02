@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Web App</title>
+</head>
+<body>
+    <h1>ChatGPT Web App</h1>
+    <form id="chat-form">
+        <label for="user-input">Enter Text:</label>
+        <input type="text" id="user-input" name="user_input" required>
+        <button type="button" onclick="getAnswer()">Get Answer</button>
+    </form>
+    <div id="answer-container"></div>
+
+    <script>
+        function getAnswer() {
+            var userInput = document.getElementById('user-input').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/get_answer', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.hasOwnProperty('answer')) {
+                        document.getElementById('answer-container').innerText = 'Answer: ' + response['answer'];
+                    } else if (response.hasOwnProperty('error')) {
+                        document.getElementById('answer-container').innerText = 'Error: ' + response['error'];
+                    }
+                } else {
+                    document.getElementById('answer-container').innerText = 'Error: Server returned status ' + xhr.status;
+                }
+            };
+            xhr.send('user_input=' + encodeURIComponent(userInput));
+        }
+    </script>
+</body>
+</html>
