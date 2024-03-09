@@ -1,0 +1,30 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Model</title>
+
+    <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-messages">
+            {% for message in messages %}
+                <div class="message {{ message['type'] }}">
+                    <p>{{ message['content'] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="input-container">
+            <form action="/chat" method="post">
+                <input type="text" id="user_input" name="user_input" required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
