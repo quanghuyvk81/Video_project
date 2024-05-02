@@ -36,9 +36,10 @@ def index():
 @app.route('/chat', methods=['POST'])
 def chat():
     base_user_input = request.form['user_input']
-    user_input = base_user_input + " Trả lời 'Không' nếu không thể trả lời chính xác."
+    user_input = base_user_input + " Chỉ trả lời 'Không' nếu không thể trả lời chính xác."
     try:
         response = convo.send_message(user_input)
+        # print(response.text)
         if response.text.startswith("Không"):
             search_results = search_google(base_user_input)
             if search_results:
@@ -54,8 +55,8 @@ def chat():
                         data += f.read()
                 data = data + "Với dữ liệu trên trả lời và giải thích." + base_user_input
                 # Send the data to the model for synthesis
-                new_convo = model.start_chat(history=[])
-                response = new_convo.send_message(data)
+                # new_convo = model.start_chat(history=[])
+                response = convo.send_message(data)
         messages = [{'type': 'model-message', 'content': response.text}]
     except Exception as e:
         print(f"Model could not respond: {e}")
