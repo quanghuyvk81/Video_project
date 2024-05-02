@@ -1,5 +1,3 @@
-<!-- templates/index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,19 +6,45 @@
     <title>ML Project - Group 11</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">   
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header class="container-fluid bg-dark">
         <nav class="navbar navbar-expand-sm navbar-dark">
             <div class="container">
-                <a class="navbar-brand" href="#"><i class="bi bi-chat mr-1 h2"></i> Group 11</a>
+                <i class="bi bi-chat mr-1 h3"></i> Group 11
             </div>
         </nav>
     </header>
     <main>
         <div class="container overflow-auto py-3 bg-dark mt-1" id="messenger">
+            <div class="row mb-2 mt-2" id="startup">
+                <div class="col-auto bg-transparent me-0">
+                    <div class="card h-100 p-2 bg-transparent">
+                        <p class="card-text icon-color bg-transparent"><i class="bi bi-robot h3"></i></p>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="card h-100 p-2 inmess">
+                        <p class="card-text">Hỏi tôi bất kỳ điều gì.</p>
+                    </div>
+                </div>
+            </div>            
             <!-- Messages will be appended here -->
+            <div class="row mb-2 mt-2" style="display: none;" id="waiting_dot">
+                <div class="col-2">
+                    <div class="card h-100 p-2 bg-transparent">
+                        <p class="card-text icon-color bg-transparent"><i class="bi bi-robot h3"></i></p>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="card h-100 ps-4 pe-4 inmess">
+                        <p class="card-text justify-content-start">
+                            <div class="dot-elastic"></div>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="container py-2 bg-dark mb-1 text-light" id="input">
             <form id="user_submit" action="/chat" method="post">
@@ -43,35 +67,46 @@
         $(document).ready(function(){
             $('#user_submit').on('submit', function(e){
                 e.preventDefault(); // Prevent default form submission
+                var container = $('#messenger');
+                var waiting_dot = $('#waiting_dot');
                 var user_input = $('#user_input').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 var newMessage = $('<div class="row justify-content-end mb-2 mt-2 mess">' +
-                                              '<div class="col-8">' +
-                                                  '<div class="card h-100 p-2 inmess">' +
-                                                      '<p class="card-text justify-content-start">' + user_input + '</p>' +
-                                                  '</div>' +
-                                              '</div>' +
-                                          '</div>');
-                $('#messenger').append(newMessage); 
-                var container = document.getElementById("messenger");
-                container.scrollTop = container.scrollHeight;
+                                    '<div class="col-8">' +
+                                        '<div class="card h-100 p-2 inmess">' +
+                                            '<p class="card-text justify-content-start">' + user_input + '</p>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<div class="col-auto bg-transparent me-0">'+
+                                    '<div class="card h-100 p-2 bg-transparent">'+
+                                        '<p class="card-text icon-color bg-transparent"><i class="bi bi-person-circle h3"></i></p>'+
+                                    '</div>'+
+                                '</div>'+
+                                '</div>');
+                container.append(newMessage);               
+                container.scrollTop(container[0].scrollHeight);
                 $('#user_input').val(''); // Clear input field
+                waiting_dot.show();
                 $.ajax({
                     type: 'POST',
                     url: '/chat',
                     data: { user_input: user_input },
                     success: function(response){
+                        waiting_dot.hide();
                         var messages = response.messages;
                         var newMessage = $('<div class="row justify-content-start mb-2 mt-2 mess">' +
+                                                '<div class="col-auto bg-transparent me-0">'+
+                                                    '<div class="card h-100 p-2 bg-transparent">'+
+                                                        '<p class="card-text icon-color bg-transparent"><i class="bi bi-robot h3"></i></p>'+
+                                                    '</div>'+
+                                                '</div>'+
                                               '<div class="col-8">' +
                                                   '<div class="card h-100 p-2 inmess">' +
                                                       '<p class="card-text">' + messages[0].content + '</p>' +
                                                   '</div>' +
                                               '</div>' +
                                           '</div>');
-                        $('#messenger').append(newMessage); 
-                        var container = document.getElementById("messenger");
-                        container.scrollTop = container.scrollHeight;
-                        // Your AJAX request and success handling logic here
+                        container.append(newMessage);
+                        container.scrollTop(container[0].scrollHeight);
                     },
                     error: function(error){
                         console.log(error);

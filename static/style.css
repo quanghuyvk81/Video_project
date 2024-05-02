@@ -15,7 +15,7 @@ main {
 }
 
 header, footer {
-    flex: 0 0 auto; /* Don't allow header and footer to grow or shrink */
+    flex: 0 0 auto; /* Dont allow header and footer to grow or shrink */
 }
 
 footer {
@@ -26,16 +26,21 @@ footer {
     width: 50%;
     height: 75vh;
     border-bottom: 1px solid #aeceff;
+    /* align-items: end; */
     overflow-y: auto; /* Enable vertical scrolling if content overflows */
 }
-
 #input {
     width: 50%;
 }
-
+.icon-color{
+    color:#aeceff;
+}   
+.bi{
+    color:#aeceff;
+}
 .inmess {
     background-color: #aeceff;
-    align-items: end;
+    font-weight:500;
 }
 
 .btn {
@@ -58,3 +63,103 @@ footer {
     box-shadow: none !important;
     outline: none !important;
 }
+
+/*!
+ * three-dots - v0.3.2
+ * CSS loading animations made with single element
+ * https://nzbin.github.io/three-dots/
+ *
+ * Copyright (c) 2018 nzbin
+ * Released under MIT License
+ */
+ @charset "UTF-8";
+ /**
+  * ==============================================
+  * Dot Elastic
+  * ==============================================
+  */
+ .dot-elastic {
+   position: relative;
+   width: 10px;
+   height: 10px;
+   border-radius: 5px;
+   background-color: #000000;
+   color: #000000;
+   animation: dot-elastic 1s infinite linear;
+ }
+ .dot-elastic::before, .dot-elastic::after {
+   content: "";
+   display: inline-block;
+   position: absolute;
+   top: 0;
+ }
+ .dot-elastic::before {
+   left: -15px;
+   width: 10px;
+   height: 10px;
+   border-radius: 5px;
+   background-color: #000000;
+   color: #000000;
+   animation: dot-elastic-before 1s infinite linear;
+ }
+ .dot-elastic::after {
+   left: 15px;
+   width: 10px;
+   height: 10px;
+   border-radius: 5px;
+   background-color: #000000;
+   color: #000000;
+   animation: dot-elastic-after 1s infinite linear;
+ }
+ 
+ @keyframes dot-elastic-before {
+   0% {
+     transform: scale(1, 1);
+   }
+   25% {
+     transform: scale(1, 1.5);
+   }
+   50% {
+     transform: scale(1, 0.67);
+   }
+   75% {
+     transform: scale(1, 1);
+   }
+   100% {
+     transform: scale(1, 1);
+   }
+ }
+ @keyframes dot-elastic {
+   0% {
+     transform: scale(1, 1);
+   }
+   25% {
+     transform: scale(1, 1);
+   }
+   50% {
+     transform: scale(1, 1.5);
+   }
+   75% {
+     transform: scale(1, 1);
+   }
+   100% {
+     transform: scale(1, 1);
+   }
+ }
+ @keyframes dot-elastic-after {
+   0% {
+     transform: scale(1, 1);
+   }
+   25% {
+     transform: scale(1, 1);
+   }
+   50% {
+     transform: scale(1, 0.67);
+   }
+   75% {
+     transform: scale(1, 1.5);
+   }
+   100% {
+     transform: scale(1, 1);
+   }
+ }
