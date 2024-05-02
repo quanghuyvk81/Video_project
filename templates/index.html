@@ -4,16 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ML Project - Group 11</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.2.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header class="container-fluid bg-dark">
         <nav class="navbar navbar-expand-sm navbar-dark">
-            <div class="container">
-                <i class="bi bi-chat mr-1 h3"></i> Group 11
+            <div class="container justify-content-start icon-color h3"><i class="bi bi-chat ms-1 me-2"></i> Group 11 </p>
             </div>
         </nav>
     </header>
@@ -68,8 +66,8 @@
         $(document).ready(function(){
             $('#user_submit').on('submit', function(e){
                 e.preventDefault(); // Prevent default form submission
-                var container = $('#messenger');
-                var waiting_dot = $('#waiting_dot');
+                var container = document.getElementById("messenger");
+                var waiting_dot = document.getElementById("waiting_dot");
                 var user_input = $('#user_input').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 var newMessage = $('<div class="row justify-content-end mb-2 mt-2 mess">' +
                                     '<div class="col-8">' +
@@ -83,21 +81,22 @@
                                     '</div>'+
                                 '</div>'+
                                 '</div>');
-                container.append(newMessage);               
-                container.scrollTop(container[0].scrollHeight);
+                container.insertBefore(newMessage[0], waiting_dot);               
+                container.scrollTop = container.scrollHeight;
                 $('#user_input').val(''); // Clear input field
-                waiting_dot.show();
+                
+                waiting_dot.style.display="block"
                 $.ajax({
                     type: 'POST',
                     url: '/chat',
                     data: { user_input: user_input },
                     success: function(response){
-                        waiting_dot.hide();
+                        waiting_dot.style.display="none"
                         var messages = response.messages;
                         var newMessage = $('<div class="row justify-content-start mb-2 mt-2 mess">' +
                                                 '<div class="col-auto bg-transparent me-0">'+
                                                     '<div class="card h-100 p-2 bg-transparent">'+
-                                                        '<p class="card-text icon-color bg-transparent"><i class="bi bi-robot h3"></i></p>'+
+                                                        '<p class="card-text icon-color bg-transparent"><i class="bi bi-google h3"></i></p>'+
                                                     '</div>'+
                                                 '</div>'+
                                               '<div class="col-8">' +
@@ -106,8 +105,8 @@
                                                   '</div>' +
                                               '</div>' +
                                           '</div>');
-                        container.append(newMessage);
-                        container.scrollTop(container[0].scrollHeight);
+                        container.insertBefore(newMessage[0], waiting_dot);
+                        container.scrollTop = container.scrollHeight;
                     },
                     error: function(error){
                         console.log(error);
