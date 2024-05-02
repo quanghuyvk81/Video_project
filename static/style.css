@@ -3,7 +3,8 @@ body {
     flex-direction: column;
     min-height: 100vh; /* Ensure the body fills the height of the viewport */
     margin: 0; /* Remove default margin */
-    background-color: #aeceff;
+    /* background-color: #aeceff; */
+    background: linear-gradient(to right, #aeceff, #85b1f2);
 }
 
 main {
@@ -23,14 +24,14 @@ footer {
 }
 
 #messenger {
-    width: 50%;
+    width: 60%;
     height: 75vh;
     border-bottom: 1px solid #aeceff;
     /* align-items: end; */
     overflow-y: auto; /* Enable vertical scrolling if content overflows */
 }
 #input {
-    width: 50%;
+    width: 60%;
 }
 .icon-color{
     color:#aeceff;
@@ -40,30 +41,9 @@ footer {
 }
 .inmess {
     background-color: #aeceff;
+    font-size: large;
     font-weight:500;
 }
-
-.btn {
-    background: none;
-    border: none;
-    outline: none;
-    box-shadow: none;
-    color: inherit;
-    text-shadow: none;
-}
-
-.bi-arrow-up-square {
-    color: #c33232;
-    height: 100%;
-    width: 100%;
-}
-
-.btn:active,
-.btn.active {
-    box-shadow: none !important;
-    outline: none !important;
-}
-
 /*!
  * three-dots - v0.3.2
  * CSS loading animations made with single element
