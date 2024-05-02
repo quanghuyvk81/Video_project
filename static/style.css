@@ -1,68 +1,60 @@
-/* static/style.css */
-
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    min-height: 100vh; /* Ensure the body fills the height of the viewport */
+    margin: 0; /* Remove default margin */
+    background-color: #aeceff;
 }
 
-.chat-container {
-    max-width: 600px;
-    width: 100%;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.chat-messages {
-    padding: 20px;
-}
-
-.message {
-    margin-bottom: 16px;
-    padding: 12px;
-    border-radius: 6px;
-}
-
-.user-message {
-    background-color: #007bff;
-    color: #ffffff;
-    align-self: flex-end;
-}
-
-.model-message {
-    background-color: #e9ecef;
-    color: #000000;
-    align-self: flex-start;
-}
-
-.input-container {
+main {
+    flex: 1; /* Allow main to grow to fill remaining vertical space */
     display: flex;
-    padding: 20px;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
 }
 
-input {
-    flex-grow: 1;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    margin-right: 10px;
+header, footer {
+    flex: 0 0 auto; /* Don't allow header and footer to grow or shrink */
 }
 
-button {
-    background-color: #007bff;
-    color: #ffffff;
-    padding: 10px 20px;
-    font-size: 16px;
+footer {
+    margin-top: auto; /* Push footer to the bottom of the page */
+}
+
+#messenger {
+    width: 50%;
+    height: 75vh;
+    border-bottom: 1px solid #aeceff;
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}
+
+#input {
+    width: 50%;
+}
+
+.inmess {
+    background-color: #aeceff;
+    align-items: end;
+}
+
+.btn {
+    background: none;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    outline: none;
+    box-shadow: none;
+    color: inherit;
+    text-shadow: none;
+}
+
+.bi-arrow-up-square {
+    color: #c33232;
+    height: 100%;
+    width: 100%;
+}
+
+.btn:active,
+.btn.active {
+    box-shadow: none !important;
+    outline: none !important;
 }

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
 from search_google import search_google
 from web_crawler import crawl_web
@@ -37,17 +37,12 @@ def index():
 def chat():
     base_user_input = request.form['user_input']
     user_input = base_user_input + " Trả lời 'Không' nếu không thể trả lời chính xác."
-    # user_input = base_user_input
     try:
         response = convo.send_message(user_input)
-        # print(user_input)
-        print(response.text)
         if response.text.startswith("Không"):
-            print("Model could not respond. Searching Google for relevant websites...")
             search_results = search_google(base_user_input)
-
             if search_results:
-                # carwl all search results
+                # Crawl all search results
                 i = 0
                 for result in search_results:
                     crawl_web(result, f'result/result_{i}.txt')
@@ -60,22 +55,13 @@ def chat():
                 data = data + "Với dữ liệu trên trả lời và giải thích." + base_user_input
                 # Send the data to the model for synthesis
                 new_convo = model.start_chat(history=[])
-                # new_response = new_convo.send_message(data)
-                # print(f"'New response:' {new_response.text}")
                 response = new_convo.send_message(data)
-                print(f"'Response:' {response.text}")
-        messages = [
-            {'type': 'user-message', 'content': f'You: {base_user_input}'},
-            {'type': 'model-message', 'content': f'Model: {response.text}'}
-        ]
+        messages = [{'type': 'model-message', 'content': response.text}]
     except Exception as e:
         print(f"Model could not respond: {e}")
-        messages = [
-            {'type': 'user-message', 'content': f'You: {base_user_input}'},
-            {'type': 'model-message', 'content': f'Không thể trả lời câu hỏi.'}
-        ]
+        messages = [{'type': 'model-message', 'content': 'Không thể trả lời câu hỏi.'}]
 
-    return render_template('index.html', messages=messages)
+    return jsonify(messages=messages)
 
 
 if __name__ == '__main__':

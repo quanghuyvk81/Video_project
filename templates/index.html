@@ -5,26 +5,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with Model</title>
-
-    <!-- Link to your CSS file -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>ML Project - Group 11</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">   
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-messages">
-            {% for message in messages %}
-                <div class="message {{ message['type'] }}">
-                    <p>{{ message['content'] }}</p>
-                </div>
-            {% endfor %}
+    <header class="container-fluid bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#"><i class="bi bi-chat mr-1 h2"></i> Group 11</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container overflow-auto py-3 bg-dark mt-1" id="messenger">
+            <!-- Messages will be appended here -->
         </div>
-        <div class="input-container">
-            <form action="/chat" method="post">
-                <input type="text" id="user_input" name="user_input" required>
-                <button type="submit">Send</button>
+        <div class="container py-2 bg-dark mb-1 text-light" id="input">
+            <form id="user_submit" action="/chat" method="post">
+                <div class="row align-items-center">
+                    <div class="col pe-0">
+                        <input type="text" class="form-control bg-transparent text-light" id="user_input" placeholder="Message here..." name="user_input" required>
+                    </div>
+                    <div class="col-auto ps-0">
+                        <button type="submit" class="btn btn-dark text-light fw-bold"><i class="bi bi-arrow-up h4"></i></button>
+                    </div>
+                </div>
             </form>
         </div>
-    </div>
+    </main>
+    <footer class="container-fluid bg-dark">
+        <div class="container-fluid bg-dark py-3 text-white text-center bg-opacity-75">Copyright &copy; Intro2ML-Group11</div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#user_submit').on('submit', function(e){
+                e.preventDefault(); // Prevent default form submission
+                var user_input = $('#user_input').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                var newMessage = $('<div class="row justify-content-end mb-2 mt-2 mess">' +
+                                              '<div class="col-8">' +
+                                                  '<div class="card h-100 p-2 inmess">' +
+                                                      '<p class="card-text justify-content-start">' + user_input + '</p>' +
+                                                  '</div>' +
+                                              '</div>' +
+                                          '</div>');
+                $('#messenger').append(newMessage); 
+                var container = document.getElementById("messenger");
+                container.scrollTop = container.scrollHeight;
+                $('#user_input').val(''); // Clear input field
+                $.ajax({
+                    type: 'POST',
+                    url: '/chat',
+                    data: { user_input: user_input },
+                    success: function(response){
+                        var messages = response.messages;
+                        var newMessage = $('<div class="row justify-content-start mb-2 mt-2 mess">' +
+                                              '<div class="col-8">' +
+                                                  '<div class="card h-100 p-2 inmess">' +
+                                                      '<p class="card-text">' + messages[0].content + '</p>' +
+                                                  '</div>' +
+                                              '</div>' +
+                                          '</div>');
+                        $('#messenger').append(newMessage); 
+                        var container = document.getElementById("messenger");
+                        container.scrollTop = container.scrollHeight;
+                        // Your AJAX request and success handling logic here
+                    },
+                    error: function(error){
+                        console.log(error);
+                        // Handle error (optional)
+                    }
+                });
+                return false; // Prevent any further event propagation
+            });
+        });
+    </script>
 </body>
 </html>
