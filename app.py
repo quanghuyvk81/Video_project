@@ -3,6 +3,7 @@ import google.generativeai as genai
 from search_google import search_google
 from web_crawler import crawl_web
 import re
+import os
 
 def get_url_from_text(text):
     urls = re.findall(r'(https?://\S+)', text)
@@ -74,4 +75,7 @@ def chat():
 
 
 if __name__ == '__main__':
+    #check if result folder exists
+    if not os.path.exists('result'):
+        os.makedirs('result')
     app.run(debug=True)
