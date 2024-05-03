@@ -2,6 +2,11 @@ from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
 from search_google import search_google
 from web_crawler import crawl_web
+import re
+
+def get_url_from_text(text):
+    urls = re.findall(r'(https?://\S+)', text)
+    return urls
 
 app = Flask(__name__)
 
@@ -36,21 +41,24 @@ def index():
 @app.route('/chat', methods=['POST'])
 def chat():
     base_user_input = request.form['user_input']
-    user_input = base_user_input + " Chỉ trả lời 'Không' nếu không thể trả lời chính xác."
+    user_input = base_user_input + "Hãy cố gắng trả lời, nếu không thể trả lời, hay cho tôi các đường dẫn https để tìm hiểu thêm."
     try:
         response = convo.send_message(user_input)
+        print(response.text)
         # print(response.text)
-        if response.text.startswith("Không"):
-            search_results = search_google(base_user_input)
-            if search_results:
+        # if response có "https" thì crawl web
+        if response.text.find("https") != -1:
+            urls = get_url_from_text(response.text)
+            # print(urls)
+            if urls:
                 # Crawl all search results
                 i = 0
-                for result in search_results:
-                    crawl_web(result, f'result/result_{i}.txt')
+                for url in urls:
+                    crawl_web(url, f'result/result_{i}.txt')
                     i += 1
                 # Combine data from all search results
                 data = ""
-                for i in range(len(search_results)):
+                for i in range(len(urls)):
                     with open(f'result/result_{i}.txt', 'r', encoding='utf-8') as f:
                         data += f.read()
                 data = data + "Với dữ liệu trên trả lời và giải thích." + base_user_input
