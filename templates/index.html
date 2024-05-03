@@ -61,6 +61,7 @@
     <footer class="container-fluid bg-dark">
         <div class="container-fluid bg-dark py-3 text-white text-center bg-opacity-75">Copyright &copy; Intro2ML-Group11</div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -81,19 +82,23 @@
                                     '</div>'+
                                 '</div>'+
                                 '</div>');
-                container.insertBefore(newMessage[0], waiting_dot);               
-                container.scrollTop = container.scrollHeight;
-                $('#user_input').val(''); // Clear input field
                 
-                waiting_dot.style.display="block"
+                $('#user_input').val(''); // Clear input field
+                container.insertBefore(newMessage[0], waiting_dot);  
+                waiting_dot.style.display="block"             
+                container.scrollTop = container.scrollHeight;
+
                 $.ajax({
                     type: 'POST',
                     url: '/chat',
                     data: { user_input: user_input },
                     success: function(response){
                         waiting_dot.style.display="none"
+                        //container.scrollTop = container.scrollHeight;
                         var messages = response.messages;
-                        var newMessage = $('<div class="row justify-content-start mb-2 mt-2 mess">' +
+                        var converter = new showdown.Converter();
+                        html_type = converter.makeHtml(messages[0].content);
+                        var newMessage = $('<div class="row justify-content-start mb-2 mt-2 mess" >' +
                                                 '<div class="col-auto bg-transparent me-0">'+
                                                     '<div class="card h-100 p-2 bg-transparent">'+
                                                         '<p class="card-text icon-color bg-transparent"><i class="bi bi-robot h3"></i></p>'+
@@ -101,12 +106,12 @@
                                                 '</div>'+
                                               '<div class="col-6">' +
                                                   '<div class="card h-100 p-2 inmess">' +
-                                                      '<p class="card-text">' + messages[0].content + '</p>' +
+                                                      '<p class="card-text">' + html_type + '</p>' +
                                                   '</div>' +
                                               '</div>' +
                                           '</div>');
-                        container.insertBefore(newMessage[0], waiting_dot);
-                        container.scrollTop = container.scrollHeight;
+                        container.insertBefore(newMessage[0], waiting_dot);  
+                        newMessage[0].scrollIntoView({ behavior: "smooth", block: "nearest" });
                     },
                     error: function(error){
                         console.log(error);

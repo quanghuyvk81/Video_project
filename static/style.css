@@ -24,14 +24,32 @@ footer {
 }
 
 #messenger {
-    width: 60%;
+    width: 80%;
     height: 75vh;
     border-bottom: 1px solid #aeceff;
     /* align-items: end; */
     overflow-y: auto; /* Enable vertical scrolling if content overflows */
 }
+/* CSS to customize the scrollbar */
+#messenger::-webkit-scrollbar {
+  width: 12px; /* Set the width of the scrollbar */
+}
+
+#messenger::-webkit-scrollbar-track {
+  background-color: #28242c; /* Set the background color of the scrollbar track */
+}
+
+#messenger::-webkit-scrollbar-thumb {
+  background-color: #aeceff; /* Set the color of the scrollbar thumb */
+  border-radius: 3px;
+   /* Set the border radius of the scrollbar thumb */
+}
+
+#messenger::-webkit-scrollbar-thumb:hover {
+  background-color: #9DB9E5; /* Set the color of the scrollbar thumb on hover */
+}
 #input {
-    width: 60%;
+    width: 80%;
 }
 .icon-color{
     color:#aeceff;
@@ -41,8 +59,8 @@ footer {
 }
 .inmess {
     background-color: #aeceff;
-    font-size: large;
-    font-weight:500;
+    font-size:larger;
+    font-weight:400;
 }
 /*!
  * three-dots - v0.3.2
