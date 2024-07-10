@@ -11,7 +11,7 @@ def get_url_from_text(text):
 
 app = Flask(__name__)
 
-genai.configure(api_key="AIzaSyD12up981Q7Tr_hvK97rBAD6IK-hpTX07Y")
+genai.configure(api_key="")
 
 generation_config = {
     "temperature": 0.9,
